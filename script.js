@@ -67,19 +67,34 @@ const alarmSound = document.getElementById('alarm-sound');
 
 // --- Module 3: Map Initialization ---
 function initMap() {
-    // Default view, will be updated by geolocation
-    map = L.map('map').setView([0, 0], 13);
+    try {
+        // Check if Leaflet is loaded
+        if (typeof L === 'undefined') {
+            console.error('Leaflet library not loaded');
+            return;
+        }
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors'
-    }).addTo(map);
+        // Default view, will be updated by geolocation
+        map = L.map('map').setView([9.9312, 76.2673], 13);
 
-    // Start background tracking immediately for "lively" feel
-    startBackgroundTracking();
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
 
-    // Load saved destination if it exists (Module 7)
-    if (destination) {
-        updateDestinationUI(destination);
+        // Invalidate map size after initialization
+        setTimeout(() => {
+            if (map) map.invalidateSize();
+        }, 100);
+
+        // Start background tracking immediately for "lively" feel
+        startBackgroundTracking();
+
+        // Load saved destination if it exists (Module 7)
+        if (destination) {
+            updateDestinationUI(destination);
+        }
+    } catch (error) {
+        console.error('Map initialization error:', error);
     }
 }
 
