@@ -163,7 +163,7 @@
 
     <div class="card">
         <h1>🚨 SOS Emergency Alert</h1>
-        <p>Your emergency contact is ready. Press SOS instantly during danger.</p>
+        <p>Your emergency contact is ready. Press SOS to send DANGER alert with your live location and nearest police station.</p>
 
         <!-- Emergency Contact Info -->
         <div id="contact-info" style="display: none; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); padding: 15px; border-radius: 12px; margin-bottom: 20px; color: #10B981;">
@@ -239,26 +239,33 @@
         document.getElementById("sos-btn").addEventListener("click", async () => {
 
             let savedNumber = localStorage.getItem("emergencyContact");
+            let savedContactData = localStorage.getItem("emergency_contact");
 
             if (!savedNumber) {
                 alert("❌ No emergency contact saved!");
                 return;
             }
 
-            document.getElementById("status").innerText =
-                "📍 Fetching live location...";
+            // Disable button to prevent multiple clicks
+            document.getElementById("sos-btn").disabled = true;
+            document.getElementById("status").innerText = "📍 Fetching live location...";
 
             navigator.geolocation.getCurrentPosition(async (pos) => {
 
                 let lat = pos.coords.latitude;
                 let lon = pos.coords.longitude;
+                let accuracy = pos.coords.accuracy;
+                let timestamp = new Date().toLocaleString();
 
                 let liveLink = `https://maps.google.com/?q=${lat},${lon}`;
 
                 /* 🚓 Find Nearest Police Station */
-                let policeName = "No police station found nearby";
+                let policeName = "Locating nearest police station...";
+                let policeDistance = "Unknown";
 
                 try {
+                    document.getElementById("status").innerText = "🚓 Finding nearest police station...";
+                    
                     let url =
                         `https://overpass-api.de/api/interpreter?data=[out:json];node(around:2000,${lat},${lon})["amenity"="police"];out;`;
 
@@ -267,37 +274,122 @@
 
                     if (data.elements.length > 0) {
                         policeName = data.elements[0].tags.name || "Police Station";
+                        // Calculate approximate distance
+                        let policeNode = data.elements[0];
+                        let policieLat = policeNode.lat;
+                        let policeLon = policeNode.lon;
+                        let distance = calculateDistance(lat, lon, policieLat, policeLon);
+                        policeDistance = distance + " km away";
                     }
 
-                } catch {
-                    policeName = "Police station lookup failed";
+                } catch (error) {
+                    console.error("Police station lookup failed:", error);
+                    policeName = "Police station location server error";
                 }
 
-                /* 📲 Emergency WhatsApp Message */
-                let msg =
-                    `🚨 EMERGENCY ALERT!\n\n` +
-                    `⚠️ Your close one is in danger!\n` +
-                    `Please respond immediately.\n\n` +
-                    `📍 Live Location:\n${liveLink}\n\n` +
-                    `🚓 Nearest Police Station:\n${policeName}`;
+                /* Get contact name if available */
+                let contactName = "Emergency Contact";
+                if (savedContactData) {
+                    try {
+                        const contactData = JSON.parse(savedContactData);
+                        contactName = contactData.name;
+                    } catch (e) {}
+                }
 
-                window.open(
-                    `https://wa.me/${savedNumber}?text=${encodeURIComponent(msg)}`
+                /* 📲 Enhanced Emergency Message */
+                let emergencyMsg =
+                    `🚨 EMERGENCY ALERT! 🚨\n\n` +
+                    `⚠️ DANGER! ${contactName} needs help immediately!\n` +
+                    `Status: IN SERIOUS DANGER\n` +
+                    `Time: ${timestamp}\n\n` +
+                    `📍 LIVE LOCATION:\n${liveLink}\n` +
+                    `Coordinates: ${lat.toFixed(4)}, ${lon.toFixed(4)}\n` +
+                    `Accuracy: ±${Math.round(accuracy)} meters\n\n` +
+                    `🚓 NEAREST POLICE STATION:\n${policeName}\n${policeDistance}\n\n` +
+                    `⚡ PRIORITY: HIGH\n` +
+                    `Please respond and contact emergency services immediately!\n\n` +
+                    `Sent from: Stopzap Emergency Alert System`;
+
+                /* SMS Message (shorter version) */
+                let smsMsg =
+                    `EMERGENCY ALERT! ${contactName} is in danger!\n` +
+                    `Location: ${liveLink}\n` +
+                    `Police: ${policeName}\n` +
+                    `Respond immediately! From Stopzap`;
+
+                document.getElementById("status").innerText = "📤 Preparing to send emergency alert...";
+
+                // Show confirmation dialog
+                const sendVia = confirm(
+                    `🚨 EMERGENCY ALERT 🚨\n\n` +
+                    `Send SOS to: ${contactName}\n\n` +
+                    `Choose transmission method:\n` +
+                    `OK = WhatsApp (recommended, more reliable)\n` +
+                    `CANCEL = SMS Text Message\n\n` +
+                    `Press OK or CANCEL to continue`
                 );
 
-                /* Alarm */
-                document.getElementById("alarm-sound").play();
+                if (sendVia) {
+                    // Send via WhatsApp
+                    document.getElementById("status").innerText = "📲 Opening WhatsApp...";
+                    window.open(
+                        `https://wa.me/${savedNumber}?text=${encodeURIComponent(emergencyMsg)}`
+                    );
+                } else {
+                    // Send via SMS
+                    document.getElementById("status").innerText = "📞 Opening SMS...";
+                    window.location.href = `sms:${savedNumber}?body=${encodeURIComponent(smsMsg)}`;
+                }
+
+                /* 🔊 Play Alarm */
+                try {
+                    const alarmSound = document.getElementById("alarm-sound");
+                    alarmSound.play().catch(e => console.log("Autoplay prevented:", e));
+                } catch (e) {
+                    console.log("Alarm play error:", e);
+                }
+
+                /* Log SOS event */
+                const sosHistory = JSON.parse(localStorage.getItem('sos_history') || '[]');
+                sosHistory.push({
+                    timestamp: timestamp,
+                    contact: contactName,
+                    phone: savedNumber,
+                    location: `${lat},${lon}`,
+                    policeStation: policeName
+                });
+                localStorage.setItem('sos_history', JSON.stringify(sosHistory));
 
                 document.getElementById("status").innerText =
-                    "✅ SOS Alert Sent Successfully!";
+                    "✅ SOS SENT! Authorities and emergency contact alerted!";
+
+                // Keep button disabled for 3 seconds
+                setTimeout(() => {
+                    document.getElementById("sos-btn").disabled = false;
+                }, 3000);
 
             },
-                () => {
+                (error) => {
                     document.getElementById("status").innerText =
-                        "❌ Location access denied!";
+                        "❌ GPS access denied! Enable location permissions.";
+                    document.getElementById("sos-btn").disabled = false;
+                    console.error("Geolocation error:", error);
                 });
 
         });
+
+        /* Calculate distance between two coordinates (Haversine formula) */
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Earth's radius in km
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = 
+                Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return (R * c).toFixed(1);
+        }
     </script>
 
     <!-- PWA Manifest -->
