@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Don't Miss Your Stop | Smart Proximity Alerts</title>
+    <meta name="description" content="Never miss your bus or train stop again with smart GPS alerts.">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Leaflet JS & CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/684/684908.png">
+</head>
+
+<body>
+    <div class="app-container">
+        <header>
+            <div class="logo">
+                <span class="logo-icon">🔔</span>
+                <h1>Stopzap</h1>
+            </div>
+            <div id="connection-status" class="status-badge">
+                <span class="status-dot"></span>
+                <span class="status-text">Online</span>
+            </div>
+        </header>
+
+        <main>
+            <!-- Module 1: Input -->
+            <section class="control-panel glass">
+                <div class="input-group">
+                    <label for="destination-input">Set Your Destination</label>
+                    <div class="search-wrapper">
+                        <div class="input-wrapper">
+                            <span class="icon">📍</span>
+                            <input type="text" id="destination-input" placeholder="Enter stop name (e.g. Aluva Metro)">
+                            <button id="search-btn" class="icon-btn">🔍</button>
+                        </div>
+                        <div id="search-results" class="search-results hidden"></div>
+                    </div>
+                </div>
+
+                <div class="settings-row">
+                    <div class="input-group">
+                        <label for="radius-input">Alert Radius (m)</label>
+                        <input type="number" id="radius-input" value="50" min="10" max="1000">
+                    </div>
+                    <div class="input-group simulate-group">
+                        <label>Mode</label>
+                        <div class="toggle-wrapper">
+                            <span>GPS</span>
+                            <label class="switch">
+                                <input type="checkbox" id="simulate-toggle">
+                                <span class="slider round"></span>
+                            </label>
+                            <span>Sim</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="action-row">
+                    <button id="start-tracking-btn" class="btn btn-primary" disabled>
+                        <span>Start Tracking</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Recent Searches Section -->
+            <section class="recent-stops glass hidden" id="recent-stops-section">
+                <h3>Recent Stops</h3>
+                <div id="recent-list" class="recent-list"></div>
+            </section>
+
+            <!-- Module 3: Map -->
+            <section class="map-section glass">
+                <div id="map"></div>
+                <div id="map-overlay" class="map-overlay hidden">
+                    <div class="overlay-content">
+                        <p id="distance-display">-- m</p>
+                        <span>to destination</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Module 4 & 5 Status -->
+            <section class="live-status glass" id="status-card">
+                <div class="status-header">
+                    <h2>Live Tracking Status</h2>
+                    <span id="tracking-indicator" class="tracking-dot"></span>
+                </div>
+                <div class="status-grid">
+                    <div class="status-item">
+                        <span class="label">Current Location</span>
+                        <span class="value small" id="curr-coords">Waiting...</span>
+                    </div>
+                    <div class="status-item">
+                        <span class="label">Target Destination</span>
+                        <span class="value small" id="dest-name">None Set</span>
+                    </div>
+                </div>
+                <p class="status-note" id="status-hint">Please allow GPS access and set a destination.</p>
+            </section>
+        </main>
+
+        <footer>
+            <p>&copy; 2026 Don't Miss Your Stop. Works Offline.</p>
+        </footer>
+    </div>
+
+    <!-- Alarm sound -->
+    <audio id="alarm-sound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"
+        loop></audio>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

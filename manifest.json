@@ -1,0 +1,15 @@
+{
+    "name": "Stopzap | Smart Transit Alerts",
+    "short_name": "Stopzap",
+    "start_url": "./index.html",
+    "display": "standalone",
+    "background_color": "#0f172a",
+    "theme_color": "#6366f1",
+    "icons": [
+        {
+            "src": "https://cdn-icons-png.flaticon.com/512/684/684908.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
