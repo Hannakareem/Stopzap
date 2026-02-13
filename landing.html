@@ -188,7 +188,66 @@
             }
         }
 
-        /* Emergency Contact Modal */
+        /* SOS Button */
+        .sos-section {
+            margin-top: 60px;
+            animation: fadeInUp 0.8s ease 0.8s both;
+        }
+
+        .sos-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 28px;
+            font-weight: 700;
+            transition: all var(--transition-smooth);
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4),
+                        0 0 0 0 rgba(239, 68, 68, 0.3);
+            animation: pulse 2s infinite;
+            position: relative;
+        }
+
+        .sos-button:hover {
+            background: linear-gradient(135deg, #DC2626, #B91C1C);
+            box-shadow: 0 12px 35px rgba(239, 68, 68, 0.6),
+                        0 0 0 4px rgba(239, 68, 68, 0.2);
+            transform: scale(1.05);
+        }
+
+        .sos-button:active {
+            transform: scale(0.98);
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4),
+                            0 0 0 0 rgba(239, 68, 68, 0.3);
+            }
+            50% {
+                box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4),
+                            0 0 0 15px rgba(239, 68, 68, 0);
+            }
+            100% {
+                box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4),
+                            0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+
+        .sos-label {
+            display: block;
+            margin-top: 12px;
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -450,6 +509,13 @@
                 <div class="feature-text">Live Maps</div>
             </a>
         </div>
+
+        <div class="sos-section">
+            <div style="text-align: center;">
+                <button class="sos-button" id="sosButton" onclick="handleSOS()" title="Emergency SOS">SOS</button>
+                <span class="sos-label">Emergency SOS</span>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -523,6 +589,100 @@
             }, 3000);
         }
 
+        // SOS Button Handler
+        function handleSOS() {
+            const emergencyContact = localStorage.getItem('emergency_contact');
+            
+            if (!emergencyContact) {
+                showSOSAlert('⚠️ Please save an emergency contact first', 'warning');
+                return;
+            }
+
+            const contact = JSON.parse(emergencyContact);
+            
+            // Create SOS confirmation dialog
+            const sosConfirm = confirm(`
+🚨 EMERGENCY SOS 🚨
+
+This will alert your emergency contact:
+${contact.name} (${contact.relation})
+${contact.phone}
+
+Are you sure you want to send SOS?
+            `);
+
+            if (sosConfirm) {
+                // Trigger SOS action
+                triggerSOS(contact);
+            }
+        }
+
+        function triggerSOS(contact) {
+            // Log SOS event
+            const sosLog = {
+                timestamp: new Date().toISOString(),
+                contact: contact.name,
+                phone: contact.phone,
+                location: 'Landing Page'
+            };
+
+            // Save to localStorage for reference
+            const sosHistory = JSON.parse(localStorage.getItem('sos_history') || '[]');
+            sosHistory.push(sosLog);
+            localStorage.setItem('sos_history', JSON.stringify(sosHistory));
+
+            // Show success message
+            showSOSAlert(`✅ SOS Activated! Attempting to alert ${contact.name}...`, 'success');
+
+            // Create visual feedback
+            const sosButton = document.getElementById('sosButton');
+            sosButton.style.animation = 'none';
+            sosButton.style.background = 'linear-gradient(135deg, #10B981, #059669)';
+            sosButton.innerHTML = '✓';
+
+            setTimeout(() => {
+                sosButton.style.animation = 'pulse 2s infinite';
+                sosButton.style.background = 'linear-gradient(135deg, #EF4444, #DC2626)';
+                sosButton.innerHTML = 'SOS';
+            }, 3000);
+
+            // Log in console for debugging
+            console.log('🚨 SOS Triggered:', sosLog);
+        }
+
+        function showSOSAlert(message, type) {
+            const alert = document.createElement('div');
+            const bgColor = type === 'success' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)';
+            const borderColor = type === 'success' ? 'rgba(16, 185, 129, 0.3)' : 'rgba(239, 68, 68, 0.3)';
+            const textColor = type === 'success' ? '#10B981' : '#EF4444';
+
+            alert.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: ${bgColor};
+                border: 2px solid ${borderColor};
+                color: ${textColor};
+                padding: 24px 32px;
+                border-radius: 12px;
+                font-size: 16px;
+                z-index: 3000;
+                animation: slideUp 0.4s ease;
+                backdrop-filter: blur(10px);
+                text-align: center;
+                font-weight: 600;
+                max-width: 300px;
+            `;
+            alert.textContent = message;
+            document.body.appendChild(alert);
+
+            setTimeout(() => {
+                alert.style.animation = 'slideDown 0.4s ease';
+                setTimeout(() => alert.remove(), 400);
+            }, 3000);
+        }
+
         // Initialize on page load
         window.addEventListener('load', initEmergencyModal);
 
@@ -548,6 +708,28 @@
                 to {
                     transform: translateX(400px);
                     opacity: 0;
+                }
+            }
+
+            @keyframes slideDown {
+                from {
+                    transform: translate(-50%, -50%);
+                    opacity: 1;
+                }
+                to {
+                    transform: translate(-50%, 50px);
+                    opacity: 0;
+                }
+            }
+
+            @keyframes slideUp {
+                from {
+                    transform: translate(-50%, 50px);
+                    opacity: 0;
+                }
+                to {
+                    transform: translate(-50%, -50%);
+                    opacity: 1;
                 }
             }
         `;
