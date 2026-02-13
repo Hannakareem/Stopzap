@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Veyl Mode - Sun & Shade Direction</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --bg-dark: #0F172A;
+    --text-main: #F8FAFC;
+    --text-muted: #94A3B8;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(-45deg, #0F172A, #1e1b4b, #312e81, #0F172A);
+    background-size: 400% 400%;
+    animation: gradientBG 15s ease infinite;
+    color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.container {
+    text-align: center;
+    max-width: 400px;
+}
+
+h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 32px;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #FFD54F, #FFA000);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+    color: var(--text-muted);
+    margin-bottom: 30px;
+}
+
+/* Sunlight Card */
+.sunlight-card {
+    padding: 25px;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #fff8d6, #ffe89c);
+    box-shadow: 0 10px 30px rgba(255, 193, 7, 0.3);
+    color: #5d4037;
+}
+
+.compass {
+    display: none;
+}
+
+.compass-labels {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    font-weight: 700;
+    font-size: 13px;
+    color: #5d4037;
+}
+
+.compass-label {
+    position: absolute;
+    font-weight: 700;
+    font-size: 12px;
+    color: #5d4037;
+}
+
+.compass-label.front { 
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.compass-label.back { 
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.compass-label.left { 
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.compass-label.right { 
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.needle, .arrow {
+    position: absolute;
+    width: 4px;
+    top: 50%;
+    left: 50%;
+    transform-origin: bottom center;
+    transform: translate(-50%, -100%);
+}
+
+.needle {
+    height: 90px;
+    background: red;
+}
+
+.sun {
+    height: 80px;
+    background: orange;
+    box-shadow: 0 0 12px rgba(255,140,0,0.8);
+}
+
+.shade {
+    height: 80px;
+    background: #333;
+}
+
+.direction-diagram {
+    margin: 20px auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    font-size: 14px;
+}
+
+.direction-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 12px 0;
+}
+
+.direction-indicator {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+}
+
+.sun-indicator {
+    background: linear-gradient(135deg, #FFD54F, #FFA000);
+}
+
+.shade-indicator {
+    background: linear-gradient(135deg, #4a4a4a, #2a2a2a);
+}
+
+.bus-layout {
+    margin: 20px auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    max-width: 280px;
+}
+
+.bus-diagram {
+    border: 3px solid #5d4037;
+    border-radius: 20px;
+    padding: 15px;
+    background: linear-gradient(to right, #fff5e1, #fff9e6);
+    position: relative;
+}
+
+.bus-header {
+    text-align: center;
+    font-weight: 700;
+    color: #5d4037;
+    margin-bottom: 10px;
+    font-size: 12px;
+}
+
+.driver-seat {
+    width: 30px;
+    height: 30px;
+    background: #d9d9d9;
+    border: 2px solid #999;
+    border-radius: 4px;
+    margin: 0 auto 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.seats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+}
+
+.seat {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #999;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.seat.sun {
+    background: #FFD54F;
+    color: #5d4037;
+    border-color: #FFA000;
+}
+
+.seat.shade {
+    background: #90A4AE;
+    color: white;
+    border-color: #546E7A;
+}
+
+.bus-legend {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid #d9d9d9;
+    font-size: 11px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.info {
+    font-weight: 500;
+    margin-top: 10px;
+}
+
+.back-btn {
+    margin-top: 25px;
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 8px;
+    background: #6366F1;
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>☀ Veyl Mode</h1>
+    <div class="subtitle">Find the Best Shade Direction</div>
+
+    <div class="sunlight-card">
+        <div id="sunInfo" class="info"></div>
+        <div id="shadeInfo" class="info"></div>
+
+        <div class="direction-diagram">
+            <div class="direction-row">
+                <div class="direction-indicator sun-indicator">☀</div>
+                <div class="direction-text">
+                    <strong id="sunDirection">Sun Location</strong><br>
+                    <small id="sunDegree">Calculate your position...</small>
+                </div>
+            </div>
+            <div class="direction-row">
+                <div class="direction-indicator shade-indicator">🌳</div>
+                <div class="direction-text">
+                    <strong id="shadeDirection">Best Shade Location</strong><br>
+                    <small id="shadeDegree">Calculate your position...</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="bus-layout">
+            <div class="bus-diagram">
+                <div class="bus-header">🚌 BUS SEAT LAYOUT</div>
+                <div class="driver-seat">🔺</div>
+                <div class="seats-grid" id="busSeats"></div>
+                <div class="bus-legend">
+                    <div class="legend-item">
+                        <div style="width: 20px; height: 20px; background: #FFD54F; border: 2px solid #FFA000; border-radius: 4px;"></div>
+                        <span>Sun</span>
+                    </div>
+                    <div class="legend-item">
+                        <div style="width: 20px; height: 20px; background: #90A4AE; border: 2px solid #546E7A; border-radius: 4px;"></div>
+                        <span>Shade</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="index.html" class="back-btn">⬅ Back to Stopzap</a>
+</div>
+
+<script>
+let heading = 0;
+
+function toRad(d){ return d * Math.PI/180 }
+function toDeg(r){ return r * 180/Math.PI }
+
+function calculateSun(lat, lon){
+    const now = new Date();
+    const utc = new Date(now.toUTCString());
+    const jd = utc.getTime()/86400000 + 2440587.5;
+    const jc = (jd - 2451545.0)/36525.0;
+
+    const gml = (280.46646 + jc*(36000.76983 + jc*0.0003032))%360;
+    const gma = 357.52911 + jc*(35999.05029 - 0.0001537*jc);
+
+    const eq = Math.sin(toRad(gma))*(1.914602 - jc*(0.004817+0.000014*jc))
+              +Math.sin(toRad(2*gma))*(0.019993 - 0.000101*jc)
+              +Math.sin(toRad(3*gma))*0.000289;
+
+    const trueLong = gml + eq;
+
+    const decl = toDeg(Math.asin(Math.sin(toRad(23.44))*Math.sin(toRad(trueLong))));
+
+    const tst = (utc.getUTCHours()*60 + utc.getUTCMinutes() + 4*lon)%1440;
+    const ha = tst/4 - 180;
+
+    const zenith = toDeg(Math.acos(
+        Math.sin(toRad(lat))*Math.sin(toRad(decl)) +
+        Math.cos(toRad(lat))*Math.cos(toRad(decl))*Math.cos(toRad(ha))
+    ));
+
+    const elevation = 90 - zenith;
+
+    const azimuth = (toDeg(Math.atan2(
+        Math.sin(toRad(ha)),
+        Math.cos(toRad(ha))*Math.sin(toRad(lat)) -
+        Math.tan(toRad(decl))*Math.cos(toRad(lat))
+    )) + 180)%360;
+
+    return {azimuth, elevation};
+}
+
+function getDirection(angle){
+    const dirs = ["Front", "Front-Right", "Right", "Back-Right", "Back", "Back-Left", "Left", "Front-Left"];
+    return dirs[Math.round(angle / 45) % 8];
+}
+
+function getDetailedDirection(angle){
+    const directions = [
+        {range: [0, 22.5], text: "Directly Ahead"},
+        {range: [22.5, 67.5], text: "To Your Right"},
+        {range: [67.5, 112.5], text: "Far Right"},
+        {range: [112.5, 157.5], text: "Behind Right"},
+        {range: [157.5, 202.5], text: "Behind You"},
+        {range: [202.5, 247.5], text: "Behind Left"},
+        {range: [247.5, 292.5], text: "Far Left"},
+        {range: [292.5, 337.5], text: "To Your Left"},
+        {range: [337.5, 360], text: "Directly Ahead"}
+    ];
+    
+    for(let d of directions){
+        if(angle >= d.range[0] && angle < d.range[1]) return d.text;
+    }
+    return "Directly Ahead";
+}
+
+function generateBusSeats(sunAngle, shadeAngle){
+    const grid = document.getElementById("busSeats");
+    grid.innerHTML = "";
+    
+    // Create 10 seat pairs (20 seats total in a typical bus layout)
+    for(let i = 1; i <= 20; i++){
+        const seat = document.createElement("div");
+        seat.className = "seat";
+        seat.textContent = i;
+        
+        // Determine if seat is on sun or shade side based on angle
+        // Angle 0-180: Right side, 180-360: Left side
+        const seatSide = i % 2; // 0 for left, 1 for right
+        
+        // Check if this side gets sun or shade
+        let isSunSide = false;
+        if(seatSide === 1){
+            // Right seats - check if sun is on right side (0-180)
+            isSunSide = sunAngle >= 0 && sunAngle <= 180;
+        } else {
+            // Left seats - check if sun is on left side (180-360)
+            isSunSide = sunAngle > 180 || sunAngle < 0;
+        }
+        
+        seat.classList.add(isSunSide ? "sun" : "shade");
+        grid.appendChild(seat);
+    }
+}
+
+function initVeyl(){
+    navigator.geolocation.getCurrentPosition(pos=>{
+        const {latitude, longitude} = pos.coords;
+        const sun = calculateSun(latitude, longitude);
+        const shadeDir = (sun.azimuth + 180)%360;
+
+        const sunDir = getDetailedDirection(sun.azimuth);
+        const shadeDetailDir = getDetailedDirection(shadeDir);
+
+        document.getElementById("sunInfo").innerText =
+            "☀ Sun is " + sunDir + " (" + Math.round(sun.azimuth) + "°)";
+
+        document.getElementById("shadeInfo").innerText =
+            "🌳 Best Shade: " + shadeDetailDir + " (" + Math.round(shadeDir) + "°)";
+
+        document.getElementById("sunDirection").innerText = "☀ " + sunDir;
+        document.getElementById("sunDegree").innerText = Math.round(sun.azimuth) + "° from North";
+        
+        document.getElementById("shadeDirection").innerText = "🌳 " + shadeDetailDir;
+        document.getElementById("shadeDegree").innerText = Math.round(shadeDir) + "° from North";
+
+        // Generate bus seat layout based on sun direction
+        generateBusSeats(sun.azimuth, shadeDir);
+
+        function update(){
+            const relSun = (sun.azimuth - heading + 360)%360;
+            const relShade = (shadeDir - heading + 360)%360;
+
+            document.getElementById("needle").style.transform =
+                `translate(-50%, -100%) rotate(${heading}deg)`;
+
+            document.getElementById("sunArrow").style.transform =
+                `translate(-50%, -100%) rotate(${relSun}deg)`;
+
+            document.getElementById("shadeArrow").style.transform =
+                `translate(-50%, -100%) rotate(${relShade}deg)`;
+        }
+
+        window.addEventListener("deviceorientation", e=>{
+            if(e.alpha!==null){
+                heading = 360 - e.alpha;
+                update();
+            }
+        });
+    });
+}
+
+document.addEventListener("DOMContentLoaded", initVeyl);
+</script>
+
+</body>
+</html>

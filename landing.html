@@ -187,6 +187,238 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* SOS Button */
+        .sos-section {
+            margin-top: 60px;
+            animation: fadeInUp 0.8s ease 0.8s both;
+        }
+
+        .sos-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 28px;
+            font-weight: 700;
+            transition: all var(--transition-smooth);
+            box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4),
+                        0 0 0 0 rgba(239, 68, 68, 0.3);
+            animation: pulse 2s infinite;
+            position: relative;
+        }
+
+        .sos-button:hover {
+            background: linear-gradient(135deg, #DC2626, #B91C1C);
+            box-shadow: 0 12px 35px rgba(239, 68, 68, 0.6),
+                        0 0 0 4px rgba(239, 68, 68, 0.2);
+            transform: scale(1.05);
+        }
+
+        .sos-button:active {
+            transform: scale(0.98);
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4),
+                            0 0 0 0 rgba(239, 68, 68, 0.3);
+            }
+            50% {
+                box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4),
+                            0 0 0 15px rgba(239, 68, 68, 0);
+            }
+            100% {
+                box-shadow: 0 8px 25px rgba(239, 68, 68, 0.4),
+                            0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+
+        .sos-label {
+            display: block;
+            margin-top: 12px;
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+            animation: fadeInOverlay 0.3s ease;
+        }
+
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        @keyframes fadeInOverlay {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .modal-content {
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 450px;
+            width: 90%;
+            backdrop-filter: blur(10px);
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-icon {
+            font-size: 48px;
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        .modal-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        .modal-subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .modal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 12px 16px;
+            background: rgba(30, 41, 59, 0.4);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 8px;
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: rgba(30, 41, 59, 0.6);
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(148, 163, 184, 0.6);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .modal-btn {
+            flex: 1;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .modal-btn-primary {
+            background: linear-gradient(135deg, #6366F1, #4F46E5);
+            color: white;
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+        }
+
+        .modal-btn-primary:hover {
+            background: linear-gradient(135deg, #4F46E5, #4338CA);
+            transform: translateY(-2px);
+        }
+
+        .modal-btn-secondary {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--text-main);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .modal-btn-secondary:hover {
+            background: rgba(99, 102, 241, 0.15);
+        }
+
+        .skip-link {
+            text-align: center;
+            margin-top: 12px;
+        }
+
+        .skip-link a {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+            cursor: pointer;
+        }
+
+        .skip-link a:hover {
+            color: var(--accent-glow);
+        }
     </style>
 
     <!-- PWA Manifest -->
@@ -196,6 +428,62 @@
 </head>
 
 <body>
+    <!-- Emergency Contact Modal -->
+    <div class="modal-overlay" id="emergencyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-icon">🚨</div>
+                <h2 class="modal-title">Emergency Contact</h2>
+                <p class="modal-subtitle">Save a trusted contact for emergency situations</p>
+            </div>
+
+            <form class="modal-form" id="emergencyForm">
+                <div class="form-group">
+                    <label for="contactName">Contact Name</label>
+                    <input 
+                        type="text" 
+                        id="contactName" 
+                        placeholder="Friend or Family Name"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="contactPhone">Phone Number</label>
+                    <input 
+                        type="tel" 
+                        id="contactPhone" 
+                        placeholder="+91 XXXXX XXXXX"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="contactRelation">Relation</label>
+                    <select id="contactRelation" required>
+                        <option value="">Select Relation</option>
+                        <option value="Friend">Friend</option>
+                        <option value="Family">Family</option>
+                        <option value="Parent">Parent</option>
+                        <option value="Sibling">Sibling</option>
+                        <option value="Spouse">Spouse</option>
+                        <option value="Guardian">Guardian</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <div class="modal-buttons">
+                    <button type="submit" class="modal-btn modal-btn-primary">Save Contact</button>
+                    <button type="button" class="modal-btn modal-btn-secondary" onclick="skipEmergencyModal()">Skip for Now</button>
+                </div>
+
+                <div class="skip-link">
+                    <a onclick="skipEmergencyModal()">Don't ask again</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div class="landing-container">
         <div class="logo-section">
             <div class="logo-icon">🔔</div>
@@ -221,7 +509,119 @@
                 <div class="feature-text">Live Maps</div>
             </a>
         </div>
+
+        <div class="sos-section">
+            <div style="text-align: center;">
+                <a href="sos.html" style="text-decoration: none;">
+                    <button class="sos-button" title="Emergency SOS">SOS</button>
+                </a>
+                <span class="sos-label">Emergency SOS</span>
+            </div>
+        </div>
     </div>
+
+    <script>
+        // Emergency Contact Modal Handler
+        function initEmergencyModal() {
+            const modal = document.getElementById('emergencyModal');
+            const form = document.getElementById('emergencyForm');
+            const savedContact = localStorage.getItem('emergency_contact_saved');
+
+            // Show modal if no contact saved
+            if (!savedContact) {
+                setTimeout(() => {
+                    modal.classList.add('show');
+                }, 500);
+            }
+
+            // Handle form submission
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const contactData = {
+                    name: document.getElementById('contactName').value,
+                    phone: document.getElementById('contactPhone').value,
+                    relation: document.getElementById('contactRelation').value,
+                    savedAt: new Date().toISOString()
+                };
+
+                // Save to localStorage - both formats for different pages
+                localStorage.setItem('emergency_contact', JSON.stringify(contactData));
+                localStorage.setItem('emergency_contact_saved', 'true');
+                localStorage.setItem('emergencyContact', contactData.phone); // For sos.html
+
+                // Close modal
+                modal.classList.remove('show');
+
+                // Show success message
+                showSuccessNotification('✅ Emergency contact saved successfully!');
+
+                // Reset form
+                form.reset();
+            });
+        }
+
+        function skipEmergencyModal() {
+            const modal = document.getElementById('emergencyModal');
+            localStorage.setItem('emergency_contact_skipped', 'true');
+            modal.classList.remove('show');
+        }
+
+        function showSuccessNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: rgba(16, 185, 129, 0.1);
+                border: 1px solid rgba(16, 185, 129, 0.3);
+                color: #10B981;
+                padding: 16px 24px;
+                border-radius: 8px;
+                font-size: 14px;
+                z-index: 3000;
+                animation: slideInRight 0.3s ease;
+                backdrop-filter: blur(10px);
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', initEmergencyModal);
+
+        // Add animation keyframes
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from {
+                    transform: translateX(400px);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+
+            @keyframes slideOutRight {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(400px);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
 </body>
 
 </html>
