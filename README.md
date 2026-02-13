@@ -101,11 +101,23 @@ npx http-server
 ![Emergency Contact Modal](./screenshots/image1.png)
 *Emergency Contact Modal - Users save their trusted emergency contact (name, phone, and relationship) on the landing page, which is instantly accessible during SOS situations for rapid emergency alerts*
 
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
+![Stopzap Landing Page](./screenshots/image2.png)
+*Stopzap Landing Page - The home interface featuring the app logo, description, feature highlights (Veyl Tracker, Smart Alerts, Live Maps), and two action buttons: AI Assistant chatbot and Emergency SOS*
 
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
+![Real-time GPS Tracking Interface](./screenshots/image3.png)
+*Real-time GPS Tracking - The main tracking app showing live map with user location, destination marker, distance-to-stop display, and customizable alert radius for proximity-based notifications*
+
+![Emergency SOS Alert Interface](./screenshots/image4.png)
+*Emergency SOS Interface - One-click emergency alert that sends live location, nearest police station information, and danger alert to saved emergency contact via WhatsApp or SMS*
+
+![AI Assistant Chatbot](./screenshots/image5.png)
+*AI Chatbot - Interactive assistant answering journey questions like distance to destination, tracking status, emergency procedures, offline capabilities, and app features with intelligent responses*
+
+![Veyl Sun/Shade Tracker](./screenshots/image6.png)
+*Veyl Sun/Shade Tracker - Shows sun direction and shade availability on your route, helping commuters choose the best seat position for comfort during their journey*
+
+![Offline Mode & Simulation](./screenshots/image7.png)
+*Offline Mode & Simulation - Progressive Web App works offline with cached maps and data, plus simulation mode allows users to test routes without real GPS before actual travel*
 
 #### Diagrams
 
