@@ -163,13 +163,20 @@
 
     <div class="card">
         <h1>🚨 SOS Emergency Alert</h1>
-        <p>Save emergency contact now. During danger, press SOS instantly.</p>
+        <p>Your emergency contact is ready. Press SOS instantly during danger.</p>
 
-        <!-- Emergency Contact Setup -->
-        <input type="text" id="emergency-number"
-            placeholder="Enter family/friend WhatsApp number">
+        <!-- Emergency Contact Info -->
+        <div id="contact-info" style="display: none; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); padding: 15px; border-radius: 12px; margin-bottom: 20px; color: #10B981;">
+            <p style="color: #10B981; font-size: 13px; margin: 0;">✅ Emergency contact saved:</p>
+            <p id="saved-contact" style="font-size: 14px; font-weight: 600; margin: 5px 0 0 0;"></p>
+        </div>
 
-        <button id="save-btn">✅ Save Contact</button>
+        <!-- Input for manual entry (hidden by default) -->
+        <div id="manual-entry" style="display: none;">
+            <input type="text" id="emergency-number"
+                placeholder="Enter family/friend WhatsApp number">
+            <button id="save-btn">✅ Save Contact</button>
+        </div>
 
         <!-- SOS Button -->
         <button id="sos-btn">🚨 SEND SOS NOW</button>
@@ -183,11 +190,30 @@
         preload="auto" loop></audio>
 
     <script>
-        /* ✅ Load saved contact on page load */
+        /* ✅ Load and display saved contact on page load */
         window.addEventListener('load', () => {
             const savedContact = localStorage.getItem('emergencyContact');
-            if (savedContact) {
-                document.getElementById('emergency-number').value = savedContact;
+            const savedContactData = localStorage.getItem('emergency_contact');
+            const contactInfo = document.getElementById('contact-info');
+            const manualEntry = document.getElementById('manual-entry');
+            const inputField = document.getElementById('emergency-number');
+
+            if (savedContact && savedContactData) {
+                // Show saved contact info
+                const contactData = JSON.parse(savedContactData);
+                document.getElementById('saved-contact').innerHTML = 
+                    `${contactData.name} (${contactData.relation})<br><small>${contactData.phone}</small>`;
+                contactInfo.style.display = 'block';
+                manualEntry.style.display = 'none';
+                inputField.style.display = 'none';
+                document.getElementById('status').innerText = '✅ Emergency contact ready!';
+            } else {
+                // No saved contact - ask user to save one
+                contactInfo.style.display = 'none';
+                manualEntry.style.display = 'block';
+                inputField.style.display = 'block';
+                document.getElementById('status').innerText = 
+                    '⚠️ Please save emergency contact below or go back to landing page';
             }
         });
 
@@ -202,8 +228,10 @@
             }
 
             localStorage.setItem("emergencyContact", number);
-
             alert("✅ Emergency Contact Saved Successfully!");
+            
+            // Reload page to show saved contact
+            location.reload();
         });
 
 

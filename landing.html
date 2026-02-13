@@ -545,9 +545,10 @@
                     savedAt: new Date().toISOString()
                 };
 
-                // Save to localStorage
+                // Save to localStorage - both formats for different pages
                 localStorage.setItem('emergency_contact', JSON.stringify(contactData));
                 localStorage.setItem('emergency_contact_saved', 'true');
+                localStorage.setItem('emergencyContact', contactData.phone); // For sos.html
 
                 // Close modal
                 modal.classList.remove('show');
