@@ -171,11 +171,11 @@
             <p id="saved-contact" style="font-size: 14px; font-weight: 600; margin: 5px 0 0 0;"></p>
         </div>
 
-        <!-- Input for manual entry (hidden by default) -->
-        <div id="manual-entry" style="display: none;">
-            <input type="text" id="emergency-number"
-                placeholder="Enter family/friend WhatsApp number">
-            <button id="save-btn">✅ Save Contact</button>
+        <!-- No Contact Saved Message -->
+        <div id="no-contact-message" style="display: none; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.3); padding: 15px; border-radius: 12px; margin-bottom: 20px; color: #EF4444;">
+            <p style="color: #EF4444; font-size: 13px; margin: 0;">⚠️ No emergency contact saved</p>
+            <p style="font-size: 14px; margin: 8px 0 0 0;">Please go back to the landing page to save your emergency contact first.</p>
+            <a href="landing.html" style="display: inline-block; margin-top: 10px; padding: 8px 16px; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.4); color: #EF4444; text-decoration: none; border-radius: 6px; font-size: 12px; font-weight: 600;">← Back to Landing</a>
         </div>
 
         <!-- SOS Button -->
@@ -195,8 +195,7 @@
             const savedContact = localStorage.getItem('emergencyContact');
             const savedContactData = localStorage.getItem('emergency_contact');
             const contactInfo = document.getElementById('contact-info');
-            const manualEntry = document.getElementById('manual-entry');
-            const inputField = document.getElementById('emergency-number');
+            const noContactMessage = document.getElementById('no-contact-message');
 
             if (savedContact && savedContactData) {
                 // Show saved contact info
@@ -204,34 +203,15 @@
                 document.getElementById('saved-contact').innerHTML = 
                     `${contactData.name} (${contactData.relation})<br><small>${contactData.phone}</small>`;
                 contactInfo.style.display = 'block';
-                manualEntry.style.display = 'none';
-                inputField.style.display = 'none';
+                noContactMessage.style.display = 'none';
                 document.getElementById('status').innerText = '✅ Emergency contact ready!';
             } else {
-                // No saved contact - ask user to save one
+                // No saved contact - show message to go to landing page
                 contactInfo.style.display = 'none';
-                manualEntry.style.display = 'block';
-                inputField.style.display = 'block';
+                noContactMessage.style.display = 'block';
                 document.getElementById('status').innerText = 
-                    '⚠️ Please save emergency contact below or go back to landing page';
+                    '⚠️ Please save your emergency contact on the landing page first';
             }
-        });
-
-        /* ✅ Save Emergency Contact */
-        document.getElementById("save-btn").addEventListener("click", () => {
-
-            let number = document.getElementById("emergency-number").value;
-
-            if (number === "") {
-                alert("❌ Please enter a valid WhatsApp number!");
-                return;
-            }
-
-            localStorage.setItem("emergencyContact", number);
-            alert("✅ Emergency Contact Saved Successfully!");
-            
-            // Reload page to show saved contact
-            location.reload();
         });
 
 
