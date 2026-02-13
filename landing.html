@@ -248,6 +248,52 @@
             text-transform: uppercase;
             letter-spacing: 1px;
         }
+
+        .chatbot-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3B82F6, #2563EB);
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 48px;
+            font-weight: 700;
+            transition: all var(--transition-smooth);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4),
+                        0 0 0 0 rgba(59, 130, 246, 0.3);
+            animation: pulse-blue 2s infinite;
+            position: relative;
+        }
+
+        .chatbot-button:hover {
+            background: linear-gradient(135deg, #2563EB, #1D4ED8);
+            box-shadow: 0 12px 35px rgba(59, 130, 246, 0.6),
+                        0 0 0 4px rgba(59, 130, 246, 0.2);
+            transform: scale(1.05);
+        }
+
+        .chatbot-button:active {
+            transform: scale(0.98);
+        }
+
+        @keyframes pulse-blue {
+            0% {
+                box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4),
+                            0 0 0 0 rgba(59, 130, 246, 0.3);
+            }
+            50% {
+                box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4),
+                            0 0 0 15px rgba(59, 130, 246, 0);
+            }
+            100% {
+                box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4),
+                            0 0 0 0 rgba(59, 130, 246, 0);
+            }
+        }
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -511,11 +557,17 @@
         </div>
 
         <div class="sos-section">
-            <div style="text-align: center;">
-                <a href="sos.html" style="text-decoration: none;">
-                    <button class="sos-button" title="Emergency SOS">SOS</button>
+            <div style="text-align: center; display: flex; justify-content: center; gap: 40px; align-items: center;">
+                <a href="chatbot.html" style="text-decoration: none; display: flex; flex-direction: column; align-items: center;">
+                    <button class="chatbot-button" title="AI Assistant">🤖</button>
+                    <span class="sos-label">AI Assistant</span>
                 </a>
-                <span class="sos-label">Emergency SOS</span>
+                <div style="text-align: center;">
+                    <a href="sos.html" style="text-decoration: none;">
+                        <button class="sos-button" title="Emergency SOS">SOS</button>
+                    </a>
+                    <span class="sos-label">Emergency SOS</span>
+                </div>
             </div>
         </div>
     </div>
