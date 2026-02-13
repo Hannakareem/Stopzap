@@ -98,7 +98,7 @@ npx http-server
 
 #### Screenshots (Add at least 3)
 
-![Emergency Contact Modal](./screenshots/emergency-contact-modal.png)
+![Emergency Contact Modal](./screenshots/image1.png)
 *Emergency Contact Modal - Users save their trusted emergency contact (name, phone, and relationship) on the landing page, which is instantly accessible during SOS situations for rapid emergency alerts*
 
 ![Screenshot2](Add screenshot 2 here with proper name)
