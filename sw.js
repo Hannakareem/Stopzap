@@ -2,7 +2,7 @@ const CACHE_NAME = 'stopzap-v2';
 const ASSETS = [
     './',
     './index.html',
-    './landing.html',
+    './index.html',
     './map.html',
     './style.css',
     './script.js',
