@@ -81,18 +81,14 @@ cd stopzap
 ```
 
 #### Run
-
-**Live Demo:** Visit the deployed app at [stopzap-ik8e.vercel.app](https://stopzap-ik8e.vercel.app/)
-
-**Local Development (Optional):**
 ```bash
 # Option 1: Python server
 python -m http.server 8000
 
-# Option 2: Node.js server (requires npm http-server)
+# Option 2: Node.js server
 npx http-server
 
-# Then visit: http://localhost:8000/index.html
+# Then visit: http://localhost:5500/index.html
 ```
 
 
