@@ -13,7 +13,7 @@
 - Member 2: [Hanna Abdul Kareem] - [SCMS School Of Engineering and Technology]
 
 ### Hosted Project Link
-[mention your project hosted link here]
+[stopzap-ik8e.vercel.app](https://stopzap-ik8e.vercel.app/)
 
 ### Project Description
 [Stopzap is a smart GPS-powered Progressive Web App that ensures you never miss your bus or train stop again with real-time proximity alerts, live mapping, and customizable alert radius. It features an AI assistant chatbot for journey support, emergency SOS alerts with location sharing and nearest police station detection, sun/shade tracking via Veyl for smart seat selection, offline functionality, and a simulation mode for testing—all wrapped in an intuitive dark-themed interface with offline-first capabilities.]
