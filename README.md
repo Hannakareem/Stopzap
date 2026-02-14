@@ -81,14 +81,18 @@ cd stopzap
 ```
 
 #### Run
+
+**Live Demo:** Visit the deployed app at [stopzap-ik8e.vercel.app](https://stopzap-ik8e.vercel.app/)
+
+**Local Development (Optional):**
 ```bash
 # Option 1: Python server
 python -m http.server 8000
 
-# Option 2: Node.js server
+# Option 2: Node.js server (requires npm http-server)
 npx http-server
 
-# Then visit: http://localhost:5500/index.html
+# Then visit: http://localhost:8000/index.html
 ```
 
 
@@ -147,58 +151,53 @@ PWA frontend with Geolocation API and Service Worker for offline support. Backen
 ### Video
 [Add your demo video link here - YouTube, Google Drive, etc.]
 
-*Explain what the video demonstrates - key features, user flow, technical highlights*
 
-### Additional Demos
-[Add any extra demo materials/links - Live site, APK download, online demo, etc.]
 
----
 
 ## AI Tools Used (Optional - For Transparency Bonus)
 
-If you used AI tools during development, document them here for transparency:
+**Tool Used:** GitHub Copilot, Claude AI
 
-**Tool Used:** [e.g., GitHub Copilot, v0.dev, Cursor, ChatGPT, Claude]
-
-**Purpose:** [What you used it for]
-- Example: "Generated boilerplate React components"
-- Example: "Debugging assistance for async functions"
-- Example: "Code review and optimization suggestions"
+**Purpose:** 
+- Generated HTML/CSS boilerplate for landing page, alarm alerts, SOS interface, and chatbot UI
+- Debugging assistance for GPS Geolocation API integration and real-time distance calculations
+- Optimized Service Worker caching strategy for offline-first functionality
+- Chatbot logic and context-aware response generation for journey queries
+- Code review and optimization suggestions for Leaflet.js map rendering
 
 **Key Prompts Used:**
-- "Create a REST API endpoint for user authentication"
-- "Debug this async function that's causing race conditions"
-- "Optimize this database query for better performance"
+- "Create a responsive dark-themed landing page with feature cards and emergency contact modal"
+- "Debug GPS tracking that's not updating distance in real-time to destination"
+- "Generate chatbot responses for transit journey questions like distance, tracking status, emergency procedures"
+- "Optimize Service Worker to cache maps, CSS, and JS for offline functionality"
+- "Create proximity alert logic that triggers when user is within customizable radius of destination"
 
-**Percentage of AI-generated code:** [Approximately X%]
+**Percentage of AI-generated code:** Approximately 40%
+- UI/UX templates and styling: ~60% AI-assisted
+- Core business logic (GPS tracking, proximity alerts, SOS handler): ~30% AI-assisted
+- API integrations (Leaflet, Nominatim, Overpass): ~35% AI-assisted
+- Chatbot functionality: ~50% AI-assisted
 
 **Human Contributions:**
-- Architecture design and planning
-- Custom business logic implementation
-- Integration and testing
-- UI/UX design decisions
+- Complete architecture design and system planning
+- Custom proximity alert algorithm implementation
+- Emergency SOS with police station detection logic
+- Service Worker offline-first strategy design
+- Veyl sun/shade tracker feature development
+- Simulation mode for route testing
+- UI/UX refinement and dark theme customization
+- API integration and data flow optimization
+- Testing and debugging of core features
+- Deployment configuration and Vercel setup
 
-*Note: Proper documentation of AI usage demonstrates transparency and earns bonus points in evaluation!*
-
----
 
 ## Team Contributions
 
-- [Name 1]: [Specific contributions - e.g., Frontend development, API integration, etc.]
-- [Name 2]: [Specific contributions - e.g., Backend development, Database design, etc.]
-- [Name 3]: [Specific contributions - e.g., UI/UX design, Testing, Documentation, etc.]
+- **Fathima Nehla P S**: Frontend development, UI/UX design, Emergency SOS feature implementation, Chatbot logic and responses, Proximity alert algorithm, Service Worker offline caching strategy, Vercel deployment configuration
+- **Hanna Abdul Kareem**: Architecture design and planning, GPS Geolocation API integration, Real-time distance calculation, Leaflet.js map implementation, Police station detection (Overpass API), Simulation mode development, Testing and debugging, Documentation
 
----
 
-## License
 
-This project is licensed under the [LICENSE_NAME] License - see the [LICENSE](LICENSE) file for details.
 
-**Common License Options:**
-- MIT License (Permissive, widely used)
-- Apache 2.0 (Permissive with patent grant)
-- GPL v3 (Copyleft, requires derivative works to be open source)
-
----
 
 Made with ❤️ at TinkerHub
